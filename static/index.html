@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YaLosVendieron</title>
+    <style>
+      /* Mejoras para móviles y confianza visual */
+      @media (max-width: 480px) {
+        body {
+          padding: 5px;
+        }
+        .container {
+          padding: 0 2px;
+        }
+        .header {
+          padding: 18px 8px;
+          font-size: 1.1em;
+        }
+        .main-grid {
+          gap: 12px;
+        }
+        .card {
+          padding: 12px 6px;
+        }
+        .update-btn {
+          font-size: 1.1em;
+          padding: 16px 10px;
+        }
+        .input-group input {
+          font-size: 1.2em;
+          padding: 18px 10px;
+        }
+        .result-value {
+          font-size: 2em;
+        }
+      }
+      .header {
+        position: relative;
+      }
+      .header .trust-badge {
+        position: absolute;
+        top: 10px;
+        right: 18px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.12);
+        padding: 6px 14px;
+        border-radius: 16px;
+        font-size: 0.95em;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(76,175,80,0.18);
+      }
+      .header .trust-badge .lock {
+        font-size: 1.2em;
+        color: #4caf50;
+      }
+      .update-btn {
+        box-shadow: 0 2px 8px rgba(76,175,80,0.18);
+        border: 2px solid #4caf50;
+      }
+      .card {
+        border-radius: 22px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      }
+      .rate-display {
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(33,150,243,0.12);
+      }
+      .input-group input {
+        border-radius: 14px;
+        border: 2px solid #4caf50;
+      }
+      .result-display {
+        border-radius: 14px;
+        border: 2px solid #2196f3;
+        box-shadow: 0 2px 8px rgba(33,150,243,0.12);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: #ffffff;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        padding: 8px;
+        border-radius: 400px;
+        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .header .subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      @media (max-width: 768px) {
+        .main-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: linear-gradient(135deg, #333333 0%, #404040 100%);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+      }
+
+      .card-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        color: #4caf50;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .rate-display {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .rate-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .rate-info {
+        font-size: 0.9em;
+        opacity: 0.8;
+      }
+
+      .update-btn {
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 auto;
+      }
+
+      .update-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+      }
+
+      .update-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .converter-section {
+        margin-bottom: 25px;
+      }
+
+      .toggle-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .toggle-btn {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid #4caf50;
+        background: transparent;
+        color: #4caf50;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: bold;
+      }
+
+      .toggle-btn.active {
+        background: #4caf50;
+        color: white;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #4caf50;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #555;
+        border-radius: 10px;
+        background: #2a2a2a;
+        color: white;
+        font-size: 1.1em;
+        transition: border-color 0.3s ease;
+      }
+
+      .input-group input:focus {
+        outline: none;
+        border-color: #4caf50;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+      }
+
+      .result-display {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        border: 2px solid #4caf50;
+      }
+
+      .result-label {
+        font-size: 0.9em;
+        color: #888;
+        margin-bottom: 10px;
+      }
+
+      .result-value {
+        font-size: 2.2em;
+        font-weight: bold;
+        color: #4caf50;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: linear-gradient(135deg, #333333 0%, #404040 100%);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .stat-value {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #4caf50;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 0.9em;
+        color: #ccc;
+      }
+
+      .chart-container {
+        background: linear-gradient(135deg, #333333 0%, #404040 100%);
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .chart {
+        height: 200px;
+        background: #2a2a2a;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .chart-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80%;
+        background: linear-gradient(45deg, #4caf50, #2196f3);
+        clip-path: polygon(
+          0 100%,
+          10% 85%,
+          20% 90%,
+          30% 75%,
+          40% 80%,
+          50% 65%,
+          60% 70%,
+          70% 55%,
+          80% 60%,
+          90% 45%,
+          100% 50%,
+          100% 100%
+        );
+        animation: chartAnimation 2s ease-out;
+      }
+
+      @keyframes chartAnimation {
+        from {
+          transform: scaleY(0);
+        }
+        to {
+          transform: scaleY(1);
+        }
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        border-radius: 10px;
+        margin-top: 30px;
+      }
+
+      .footer-warning {
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .footer-disclaimer {
+        font-size: 0.8em;
+        opacity: 0.9;
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #3877eb 0%, #45a049 100%);
+        color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+
+      .notification.show {
+        transform: translateX(0);
+      }
+
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Animaciones adicionales para mejorar la experiencia */
+      .card-enter {
+        animation: cardSlideIn 0.6s ease-out;
+      }
+
+      @keyframes cardSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .glow-effect {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glow-effect::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(76, 175, 80, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate 3s linear infinite;
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .shimmer {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>YaLosVendieron</h1>
+        <p class="subtitle">Calculadora y Monitor de Tasas</p>
+        
+      </header>
+
+      <div class="main-grid">
+        <!-- Sección de Tasa Actual -->
+        <div class="card">
+          <h2 class="card-title">
+            <span>📊</span>
+            Tasa Actual
+          </h2>
+          
+          <div class="rate-display pulse">
+            <div class="rate-value" id="currentRate"></div>
+            <div class="rate-info">
+              <div>1 USD = <span id="rateInBs"></span> Bs</div>
+              <div id="lastUpdate"></div>
+            </div>
+          </div>
+          <button class="update-btn" id="updateBtn">
+            <span id="updateIcon">🔄</span>
+            <span id="updateText">Actualizar Tasa</span>
+          </button>
+          
+        </div>
+
+        <!-- Calculadora -->
+        <div class="card">
+          <h2 class="card-title">
+            <span>🔢</span>
+            Calculadora
+          </h2>
+          <div class="converter-section">
+            <div class="toggle-buttons">
+              <button class="toggle-btn active" id="usdToBsBtn">
+                USD → Bs
+              </button>
+              <button class="toggle-btn" id="bsToUsdBtn">Bs → USD</button>
+            </div>
+
+            <div class="input-group">
+              <label for="amountInput" id="inputLabel">Cantidad en USD:</label>
+              <input
+                type="number"
+                id="amountInput"
+                placeholder="Ingrese cantidad"
+                step="0.01"
+              />
+            </div>
+
+            <div class="result-display">
+              <div class="result-label">Resultado:</div>
+              <div class="result-value" id="conversionResult">0.00 Bs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-warning">⚠️ IMPORTANTE: Valores Oficiales de la pagina BCV</div>
+        <div class="footer-disclaimer">
+          Esta aplicación muestra valores oficiales directamente de la pagina https://www.bcv.org.ve/
+          <p>DevMarmot</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+      <span id="notificationText">Tasa actualizada correctamente</span>
+    </div>
+
+    <!-- JavaScript para animaciones básicas de UI -->
+    <script>
+      // Animaciones de entrada cuando se carga la página
+      document.addEventListener("DOMContentLoaded", function () {
+        // Añadir clases de animación a las tarjetas
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.classList.add("card-enter");
+          }, index * 200);
+        });
+
+        // Efectos visuales adicionales
+        const rateDisplay = document.querySelector(".rate-display");
+        rateDisplay.classList.add("glow-effect");
+      });
+
+      // Efectos hover y estados visuales
+      const updateBtn = document.getElementById("updateBtn");
+      const toggleBtns = document.querySelectorAll(".toggle-btn");
+      const amountInput = document.getElementById("amountInput");
+
+      // Efectos de toggle buttons
+      toggleBtns.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          toggleBtns.forEach((b) => b.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+
+      // Efecto de focus en input
+      amountInput.addEventListener("focus", function () {
+        this.parentElement.style.transform = "scale(1.02)";
+      });
+
+      amountInput.addEventListener("blur", function () {
+        this.parentElement.style.transform = "scale(1)";
+      });
+
+      // Función para mostrar notificación (solo UI)
+      function showNotification(message) {
+        const notification = document.getElementById("notification");
+        const notificationText = document.getElementById("notificationText");
+
+        notificationText.textContent = message;
+        notification.classList.add("show");
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      // Función para mostrar estado de carga en botón
+      function setButtonLoading(loading) {
+        const updateBtn = document.getElementById("updateBtn");
+        const updateIcon = document.getElementById("updateIcon");
+        const updateText = document.getElementById("updateText");
+
+        if (loading) {
+          updateBtn.disabled = true;
+          updateIcon.innerHTML = '<div class="loading-spinner"></div>';
+          updateText.textContent = "Actualizando...";
+        } else {
+          updateBtn.disabled = false;
+          updateIcon.textContent = "🔄";
+          updateText.textContent = "Actualizar Tasa";
+        }
+      }
+
+      // Ejemplo de uso de las funciones UI
+      updateBtn.addEventListener("click", async function () {
+        setButtonLoading(true);
+
+        try {
+          const response = await fetch("/api/rate");
+          const data = await response.json();
+
+          document.getElementById("currentRate").textContent = data.value.toFixed(2);
+          document.getElementById("rateInBs").textContent = data.value.toFixed(2);
+          document.getElementById("lastUpdate").textContent = `Actualizado: ${data.last_updated}`;
+
+          showNotification("Tasa actualizada correctamente");
+        } catch (error) {
+          showNotification("Error al obtener la tasa");
+          console.error(error);
+        }
+
+        setButtonLoading(false);
+      });
+
+      // Mejorar la calculadora para usar la API
+      let currentRate = null;
+      async function fetchRate() {
+        try {
+          const response = await fetch("/api/rate");
+          const data = await response.json();
+          currentRate = data.value;
+        } catch (error) {
+          currentRate = null;
+        }
+      }
+
+      // Inicializar la tasa al cargar
+      fetchRate();
+
+      const usdToBsBtn = document.getElementById("usdToBsBtn");
+      const bsToUsdBtn = document.getElementById("bsToUsdBtn");
+      const conversionResult = document.getElementById("conversionResult");
+      const inputLabel = document.getElementById("inputLabel");
+
+      let mode = "usdToBs";
+
+      usdToBsBtn.addEventListener("click", function () {
+        mode = "usdToBs";
+        inputLabel.textContent = "Cantidad en USD:";
+        conversionResult.textContent = "0.00 Bs";
+        amountInput.value = "";
+      });
+
+      bsToUsdBtn.addEventListener("click", function () {
+        mode = "bsToUsd";
+        inputLabel.textContent = "Cantidad en Bs:";
+        conversionResult.textContent = "0.00 USD";
+        amountInput.value = "";
+      });
+
+      amountInput.addEventListener("input", async function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0) {
+          conversionResult.textContent = mode === "usdToBs" ? "0.00 Bs" : "0.00 USD";
+          return;
+        }
+        if (mode === "usdToBs") {
+          try {
+            const response = await fetch(`/api/to-bs?usd=${value}`);
+            const data = await response.json();
+            conversionResult.textContent = `${data.converted.toFixed(2)} Bs`;
+          } catch {
+            conversionResult.textContent = "Error";
+          }
+        } else {
+          try {
+            const response = await fetch(`/api/to-usd?bs=${value}`);
+            const data = await response.json();
+            conversionResult.textContent = `${data.converted.toFixed(2)} USD`;
+          } catch {
+            conversionResult.textContent = "Error";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
