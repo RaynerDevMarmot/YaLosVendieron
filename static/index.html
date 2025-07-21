@@ -4,79 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YaLosVendieron</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#181c20">
+    <link rel="icon" sizes="192x192" href="/icon-192.png">
+    <link rel="icon" sizes="512x512" href="/icon-512.png">
     <style>
-      /* Mejoras para móviles y confianza visual */
-      @media (max-width: 480px) {
-        body {
-          padding: 5px;
-        }
-        .container {
-          padding: 0 2px;
-        }
-        .header {
-          padding: 18px 8px;
-          font-size: 1.1em;
-        }
-        .main-grid {
-          gap: 12px;
-        }
-        .card {
-          padding: 12px 6px;
-        }
-        .update-btn {
-          font-size: 1.1em;
-          padding: 16px 10px;
-        }
-        .input-group input {
-          font-size: 1.2em;
-          padding: 18px 10px;
-        }
-        .result-value {
-          font-size: 2em;
-        }
-      }
-      .header {
-        position: relative;
-      }
-      .header .trust-badge {
-        position: absolute;
-        top: 10px;
-        right: 18px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(255,255,255,0.12);
-        padding: 6px 14px;
-        border-radius: 16px;
-        font-size: 0.95em;
-        color: #fff;
-        box-shadow: 0 2px 8px rgba(76,175,80,0.18);
-      }
-      .header .trust-badge .lock {
-        font-size: 1.2em;
-        color: #4caf50;
-      }
-      .update-btn {
-        box-shadow: 0 2px 8px rgba(76,175,80,0.18);
-        border: 2px solid #4caf50;
-      }
-      .card {
-        border-radius: 22px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-      }
-      .rate-display {
-        border-radius: 16px;
-        box-shadow: 0 2px 10px rgba(33,150,243,0.12);
-      }
-      .input-group input {
-        border-radius: 14px;
-        border: 2px solid #4caf50;
-      }
-      .result-display {
-        border-radius: 14px;
-        border: 2px solid #2196f3;
-        box-shadow: 0 2px 8px rgba(33,150,243,0.12);
-      }
       * {
         margin: 0;
         padding: 0;
@@ -84,206 +16,217 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        color: #ffffff;
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        background: #181c20;
+        color: #e3e7ee;
         min-height: 100vh;
-        padding: 20px;
+        padding: 0;
+        transition: background 0.3s;
       }
 
       .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        animation: fadeIn 0.8s ease-out;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 28px 20px;
+        background: #23272b;
+        border-radius: 20px;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+        transition: background 0.3s;
       }
 
       .header {
         text-align: center;
-        margin-bottom: 20px;
-        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-        padding: 8px;
-        border-radius: 400px;
-        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
-      }
-
-      .header h1 {
-        font-size: 2.5em;
         margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       }
-
+      .header h1 {
+        font-size: 2.2em;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: #3ba819;
+        letter-spacing: 1px;
+      }
       .header .subtitle {
-        font-size: 1.2em;
-        opacity: 0.9;
+        font-size: 1.05em;
+        color: #b0bec5;
+        font-weight: 100;
+        letter-spacing: 0.5px;
       }
 
       .main-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        margin-bottom: 30px;
-      }
-
-      @media (max-width: 768px) {
-        .main-grid {
-          grid-template-columns: 1fr;
-        }
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
       }
 
       .card {
-        background: linear-gradient(135deg, #333333 0%, #404040 100%);
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: #23272b;
+        border-radius: 14px;
+        padding: 22px 16px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+        margin-bottom: 0;
+        border: 1px solid #22262a;
+        transition: box-shadow 0.3s;
       }
-
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
-      }
-
       .card-title {
-        font-size: 1.5em;
-        margin-bottom: 20px;
-        color: #4caf50;
+        font-size: 1.18em;
+        font-weight: 600;
+        margin-bottom: 18px;
+        color: #4fc3f7;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
       }
 
       .rate-display {
         text-align: center;
-        padding: 20px;
-        background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-        border-radius: 10px;
-        margin-bottom: 20px;
-      }
-
-      .rate-value {
-        font-size: 2.5em;
-        font-weight: bold;
+        padding: 12px 0 8px 0;
+        background: none;
+        border-radius: 8px;
         margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       }
-
+      .rate-value {
+        font-size: 2.1em;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 2px;
+        letter-spacing: 1px;
+      }
       .rate-info {
-        font-size: 0.9em;
-        opacity: 0.8;
+        font-size: 1em;
+        color: #b0bec5;
       }
-
       .update-btn {
-        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-        color: white;
+        background: linear-gradient(90deg, #4fc3f7 0%, #1976d2 100%);
+        color: #fff;
         border: none;
-        padding: 12px 24px;
-        border-radius: 25px;
+        padding: 12px 20px;
+        border-radius: 10px;
         cursor: pointer;
         font-size: 1em;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        font-weight: 500;
         margin: 0 auto;
+        display: block;
+        transition: background 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 8px rgba(33,150,243,0.10);
       }
-
       .update-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        background: linear-gradient(90deg, #1976d2 0%, #4fc3f7 100%);
+        box-shadow: 0 4px 16px rgba(33,150,243,0.18);
       }
-
       .update-btn:disabled {
         opacity: 0.6;
         cursor: not-allowed;
-        transform: none;
       }
 
       .converter-section {
-        margin-bottom: 25px;
+        margin-bottom: 0;
       }
-
       .toggle-buttons {
         display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
+        gap: 8px;
+        margin-bottom: 18px;
       }
-
       .toggle-btn {
         flex: 1;
-        padding: 12px;
-        border: 2px solid #4caf50;
-        background: transparent;
-        color: #4caf50;
-        border-radius: 10px;
+        padding: 10px 0;
+        border: none;
+        background: #22262a;
+        color: #4fc3f7;
+        border-radius: 8px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: bold;
+        font-weight: 500;
+        font-size: 1em;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 1px 4px rgba(33,150,243,0.04);
       }
-
       .toggle-btn.active {
-        background: #4caf50;
-        color: white;
+        background: linear-gradient(90deg, #4fc3f7 0%, #1976d2 100%);
+        color: #fff;
       }
 
       .input-group {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
-
       .input-group label {
         display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #4caf50;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #4fc3f7;
       }
-
       .input-group input {
         width: 100%;
-        padding: 15px;
-        border: 2px solid #555;
-        border-radius: 10px;
-        background: #2a2a2a;
-        color: white;
+        padding: 13px;
+        border: 1px solid #374151;
+        border-radius: 8px;
+        background: #181c20;
+        color: #fff;
         font-size: 1.1em;
-        transition: border-color 0.3s ease;
+        transition: border-color 0.2s, background 0.2s;
       }
-
       .input-group input:focus {
         outline: none;
-        border-color: #4caf50;
-        box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        border-color: #4fc3f7;
+        background: #23272b;
       }
 
       .result-display {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        padding: 20px;
-        border-radius: 10px;
+        background: #181c20;
+        padding: 16px;
+        border-radius: 8px;
         text-align: center;
-        border: 2px solid #4caf50;
+        border: 1px solid #22262a;
+        margin-top: 8px;
+        box-shadow: 0 1px 4px rgba(33,150,243,0.04);
       }
-
       .result-label {
-        font-size: 0.9em;
-        color: #888;
-        margin-bottom: 10px;
+        font-size: 1em;
+        color: #b0bec5;
+        margin-bottom: 8px;
+      }
+      .result-value {
+        font-size: 1.8em;
+        font-weight: 600;
+        color: #ffffff;
+        margin-top: 2px;
+        letter-spacing: 1px;
       }
 
-      .result-value {
-        font-size: 2.2em;
-        font-weight: bold;
-        color: #4caf50;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      .footer {
+        text-align: center;
+        padding: 16px;
+        background: #23272b;
+        border-radius: 8px;
+        margin-top: 32px;
+        font-size: 1em;
+        color: #b0bec5;
+      }
+      .footer-warning {
+        font-size: 1em;
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: #000000;
+      }
+      .footer-disclaimer {
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+
+      .notification {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        padding: 12px 18px;
+        background: linear-gradient(90deg, #4fc3f7 0%, #1976d2 100%);
+        color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(33,150,243,0.12);
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        font-size: 1em;
+      }
+      .notification.show {
+        transform: translateX(0);
       }
 
       .stats-grid {
@@ -368,7 +311,7 @@
       .footer {
         text-align: center;
         padding: 20px;
-        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        background: linear-gradient(135deg, #966565 0%, #ff8000 100%);
         border-radius: 10px;
         margin-top: 30px;
       }
@@ -382,6 +325,7 @@
       .footer-disclaimer {
         font-size: 0.8em;
         opacity: 0.9;
+        color: #000000;
       }
 
       .loading-spinner {
@@ -490,6 +434,13 @@
         animation: shimmer 1.5s infinite;
       }
 
+      .flotante {
+display:scroll;
+position:fixed;
+bottom:320px;
+right:0px;
+}
+
       @keyframes shimmer {
         0% {
           background-position: -200% 0;
@@ -519,7 +470,7 @@
           <div class="rate-display pulse">
             <div class="rate-value" id="currentRate"></div>
             <div class="rate-info">
-              <div>1 USD = <span id="rateInBs"></span> Bs</div>
+              <div>Presione Actualizar Tasa para ver el Valor<span id="rateInBs"></span></div>
               <div id="lastUpdate"></div>
             </div>
           </div>
@@ -563,12 +514,16 @@
       </div>
       <!-- Footer -->
       <footer class="footer">
-        <div class="footer-warning">⚠️ IMPORTANTE: Valores Oficiales de la pagina BCV</div>
+        <div class="footer-warning">⚠️ IMPORTANTE: Valores Oficiales BCV</div>
         <div class="footer-disclaimer">
           Esta aplicación muestra valores oficiales directamente de la pagina https://www.bcv.org.ve/
+          <p>Le sugerimos revisar de igual forma la pagina oficial </p>
           <p>DevMarmot</p>
         </div>
       </footer>
+      <button id="shareBtn" class="flotante" title="Compartir" style="background: linear-gradient(90deg, #4fc3f7 0%, #1976d2 100%); color: #fff; border: none; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 2px 8px rgba(33,150,243,0.18); position: fixed; bottom: 32px; right: 24px; display: flex; align-items: center; justify-content: center; font-size: 2em; cursor: pointer; z-index: 1001;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
     </div>
 
     <!-- Notificación -->
@@ -578,6 +533,36 @@
 
     <!-- JavaScript para animaciones básicas de UI -->
     <script>
+      // Botón compartir
+      const shareBtn = document.getElementById('shareBtn');
+      shareBtn.addEventListener('click', function () {
+        const shareUrl = 'https://yalosvendieron-production.up.railway.app/';
+        if (navigator.share) {
+          navigator.share({
+            title: 'YaLosVendieron',
+            text: 'Calculadora y Monitor de Tasas USD/Bs',
+            url: shareUrl
+          });
+        } else {
+          // Si no soporta Web Share, copiar al portapapeles y mostrar notificación
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            showNotification('Enlace copiado para compartir');
+          }, () => {
+            showNotification('No se pudo copiar el enlace');
+          });
+        }
+      });
+      // Registrar service worker para PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(function(reg) {
+              // Service worker registrado
+            }).catch(function(err) {
+              // Error al registrar
+            });
+        });
+      }
       // Animaciones de entrada cuando se carga la página
       document.addEventListener("DOMContentLoaded", function () {
         // Añadir clases de animación a las tarjetas
@@ -614,6 +599,17 @@
       amountInput.addEventListener("blur", function () {
         this.parentElement.style.transform = "scale(1)";
       });
+
+
+      // Formatea número al estilo venezolano: 3.254,80
+      function formatVenezuelan(num) {
+        if (typeof num !== "number" || isNaN(num)) return "0,00";
+        // Separa parte entera y decimal
+        let [entero, decimal] = num.toFixed(2).split(".");
+        // Agrega puntos a los miles
+        entero = entero.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return `${entero},${decimal}`;
+      }
 
       // Función para mostrar notificación (solo UI)
       function showNotification(message) {
@@ -653,8 +649,8 @@
           const response = await fetch("/api/rate");
           const data = await response.json();
 
-          document.getElementById("currentRate").textContent = data.value.toFixed(2);
-          document.getElementById("rateInBs").textContent = data.value.toFixed(2);
+          document.getElementById("currentRate").textContent = formatVenezuelan(data.value) + " Bs";
+          document.getElementById("rateInBs").textContent = formatVenezuelan(data.value) + " Bs";
           document.getElementById("lastUpdate").textContent = `Actualizado: ${data.last_updated}`;
 
           showNotification("Tasa actualizada correctamente");
@@ -691,28 +687,42 @@
       usdToBsBtn.addEventListener("click", function () {
         mode = "usdToBs";
         inputLabel.textContent = "Cantidad en USD:";
-        conversionResult.textContent = "0.00 Bs";
+        conversionResult.classList.remove("usd");
+        conversionResult.classList.add("bs");
+        conversionResult.textContent = `Bs ${formatVenezuelan(0)}`;
         amountInput.value = "";
       });
 
       bsToUsdBtn.addEventListener("click", function () {
         mode = "bsToUsd";
         inputLabel.textContent = "Cantidad en Bs:";
-        conversionResult.textContent = "0.00 USD";
+        conversionResult.classList.remove("bs");
+        conversionResult.classList.add("usd");
+        conversionResult.textContent = `USD ${formatVenezuelan(0)}`;
         amountInput.value = "";
       });
 
       amountInput.addEventListener("input", async function () {
         const value = parseFloat(this.value);
         if (isNaN(value) || value < 0) {
-          conversionResult.textContent = mode === "usdToBs" ? "0.00 Bs" : "0.00 USD";
+          if (mode === "usdToBs") {
+            conversionResult.classList.remove("usd");
+            conversionResult.classList.add("bs");
+            conversionResult.textContent = `Bs ${formatVenezuelan(0)}`;
+          } else {
+            conversionResult.classList.remove("bs");
+            conversionResult.classList.add("usd");
+            conversionResult.textContent = `USD ${formatVenezuelan(0)}`;
+          }
           return;
         }
         if (mode === "usdToBs") {
           try {
             const response = await fetch(`/api/to-bs?usd=${value}`);
             const data = await response.json();
-            conversionResult.textContent = `${data.converted.toFixed(2)} Bs`;
+            conversionResult.classList.remove("usd");
+            conversionResult.classList.add("bs");
+            conversionResult.textContent = `Bs ${formatVenezuelan(data.converted)}`;
           } catch {
             conversionResult.textContent = "Error";
           }
@@ -720,7 +730,9 @@
           try {
             const response = await fetch(`/api/to-usd?bs=${value}`);
             const data = await response.json();
-            conversionResult.textContent = `${data.converted.toFixed(2)} USD`;
+            conversionResult.classList.remove("bs");
+            conversionResult.classList.add("usd");
+            conversionResult.textContent = `USD ${formatVenezuelan(data.converted)}`;
           } catch {
             conversionResult.textContent = "Error";
           }
