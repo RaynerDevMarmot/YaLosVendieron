@@ -8,8 +8,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/PuerkitoBio/goquery"
 )
 
 type RateResponse struct {
@@ -83,27 +81,25 @@ func getRate() float64 {
 		return cachedRate
 	}
 
-	res, err := http.Get("https://www.bcv.org.ve/")
+	// Usa tu API key aquí
+	apiKey := "2dbb23de20e25c56ebc1f143"
+	url := "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/USD"
+	res, err := http.Get(url)
 	if err != nil {
-		log.Println("Error al consultar BCV:", err)
+		log.Println("Error al consultar exchangerate-api:", err)
 		return cachedRate
 	}
 	defer res.Body.Close()
-	doc, err := goquery.NewDocumentFromReader(res.Body)
-	if err != nil {
-		log.Println("Error al parsear HTML:", err)
+
+	var result struct {
+		ConversionRates map[string]float64 `json:"conversion_rates"`
+	}
+	if err := json.NewDecoder(res.Body).Decode(&result); err != nil {
+		log.Println("Error al decodificar JSON:", err)
 		return cachedRate
 	}
 
-	   var newRate float64
-	   doc.Find("#dolar strong").Each(func(i int, s *goquery.Selection) {
-			   val := s.Text()
-			   val = sanitize(val)
-			   if rate, err := strconv.ParseFloat(val, 64); err == nil && rate > 1 {
-					   newRate = rate
-			   }
-	   })
-
+	newRate := result.ConversionRates["VES"]
 	if newRate > 1 {
 		cachedRate = newRate
 		lastUpdated = time.Now()
